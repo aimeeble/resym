@@ -8,8 +8,17 @@ def verify_link(symlink_filename):
    if os.path.exists(real_filename):
       return True
 
-   print 'symlink: %s' % (symlink_filename)
-   print '\tInvalid target %s' % (real_filename)
+   new_filename = real_filename.replace('/Users/agl', '/Users/aimeeble')
+   if os.path.exists(new_filename):
+      print 'symlink: %s -> %s' % (symlink_filename, real_filename)
+
+   try:
+      os.unlink(symlink_filename)
+      os.symlink(new_filename, symlink_filename)
+   except:
+      print 'error re-linking %s' % (symlink_filename)
+      pass
+
    return False
 
 
