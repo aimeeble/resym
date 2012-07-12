@@ -14,14 +14,19 @@ def verify_link(symlink_filename):
 
 
 def find_links(roots, ignores=[]):
+   count = 0
+   bad = 0
+
    for root in roots:
       for entry in os.walk(root):
          for filename in entry[2]:
             abs_filename = os.path.abspath(os.path.join(entry[0], filename))
             if not os.path.islink(abs_filename):
                continue
-            verify_link(abs_filename)
+            count += 1
+            bad += 0 if verify_link(abs_filename) else 1
 
+   print 'Total %u/%u links bad (%.2f%%)' % (bad, count, 100.*bad/count)
 
 if __name__ == '__main__':
    if len(sys.argv) < 2:
